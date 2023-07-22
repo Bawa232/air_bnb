@@ -1,10 +1,7 @@
 #!/usr/bin/python3
 ''' defining filestorage class '''
 
-
 from models.base_model import BaseModel
-
-
 
 class FileStorage:
 
@@ -35,7 +32,7 @@ class FileStorage:
     def reload(self):
         try:
             with open(FileStorage.__file_path, 'r') as f:
-                objde = json.load(f):
+                objde = json.load(f)
 
             for key, value in objde.items():
                 if value["__class__"] == "BaseModel":
