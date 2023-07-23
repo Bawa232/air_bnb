@@ -2,7 +2,6 @@
 ''' class that defines the attributes
 and methods to be inherited by other classes
 '''
-
 from models import storage
 from uuid import uuid4
 from datetime import datetime

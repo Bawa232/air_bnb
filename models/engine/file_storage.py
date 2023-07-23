@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 ''' defining filestorage class '''
 
-from models.base_model import BaseModel
+
+
+import json
+
 
 class FileStorage:
 
@@ -30,12 +33,14 @@ class FileStorage:
             json.dump(obj_dict, f)
 
     def reload(self):
+        from models.base_model import BaseModel
+        objde = {}
         try:
             with open(FileStorage.__file_path, 'r') as f:
                 objde = json.load(f)
 
-            for key, value in objde.items():
-                if value["__class__"] == "BaseModel":
-                    FileStorage.__objects[key] = BaseModel(**value)
+                for key, value in objde.items():
+                    if value["__class__"] == "BaseModel":
+                        FileStorage.__objects[key] = BaseModel(**value)
         except FileNotFoundError:
             pass
