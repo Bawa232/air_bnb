@@ -36,7 +36,7 @@ class BaseModel:
 
     def to_dict(self):
         ''' returns a dictionary representation of an instance '''
-        todic = self.__dict__
+        todic = self.__dict__.copy()
         todic["__class__"] = self.__class__.__name__
         for key, value in todic.items():
             if isinstance(value, datetime):

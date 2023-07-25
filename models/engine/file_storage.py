@@ -34,6 +34,7 @@ class FileStorage:
 
     def reload(self):
         from models.base_model import BaseModel
+        from models.user import User
         objde = {}
         try:
             with open(FileStorage.__file_path, 'r') as f:
@@ -42,5 +43,7 @@ class FileStorage:
                 for key, value in objde.items():
                     if value["__class__"] == "BaseModel":
                         FileStorage.__objects[key] = BaseModel(**value)
+                    elif value["__class__"] == "User":
+                        FileStorage.__objects[key] = User(**value)
         except FileNotFoundError:
             pass
