@@ -5,10 +5,18 @@
 import cmd
 from models.base_model import BaseModel
 from models import storage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 import shlex
 
 
 class HBNBCommand(cmd.Cmd):
+
+    __classes = ["BaseModel", "User", "State", "City", "Amenity", "Place", "Review"]
 
     prompt = "(hbnb) "
 
@@ -29,8 +37,8 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
 
         if arg:
-            if arg == 'BaseModel':
-                new_obj = BaseModel()
+            if arg in HBNBCommand.__classes:
+                new_obj = eval(arg)()
                 new_obj.save()
                 print(new_obj.id)
 
@@ -53,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             clsName = args[0]
             idName = args[1]
-        if clsName != "BaseModel":
+        if clsName not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
         obj_rep = storage.all()
@@ -70,10 +78,10 @@ class HBNBCommand(cmd.Cmd):
         if len(args1) == 0:
             print("** class name missing **")
             return
-        elif len(args1) == 1 and args1[0] != "BaseModel":
+        elif len(args1) == 1 and args1[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
             return
-        elif len(args1) == 1 and args1[0] == "BaseModel":
+        elif len(args1) == 1 and args1[0] in HBNBCommand.__classes:
             print("** instance id missing **")
             return
         else:
@@ -97,14 +105,15 @@ class HBNBCommand(cmd.Cmd):
             for key in all_inst.keys():
                 str_list.append(str(all_inst[key]))
             print(str_list)
-        elif arg:
+            return
+        if arg:
             for key in all_inst.keys():
                 if key.split(".")[0] == arg:
                     str_list.append(str(all_inst[key]))
+                else:
+                    print("** class doesn't exist **")
+                    return
             print(str_list)
-        else:
-            print("** class doesn't exist **")
-            return
 
     def do_update(self, arg):
         
@@ -132,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
             except Exception:
                 attr_value = str(arg_list[3])
 
-            if cls_Name != "BaseModel":
+            if cls_Name not in HBNBCommand.__classes:
                 print("** class doesn't exist **")
                 return
             
